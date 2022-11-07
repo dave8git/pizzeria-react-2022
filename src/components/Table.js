@@ -14,6 +14,7 @@ function Table() {
   const [status, setStatus] = useState(table.status);
   const [people, setPeople ] = useState(table.maxPeople);
   const [maxPeople, setMaxPeople] = useState(table.maxPeople);
+  const [bill, setBill] = useState(table.bill);
 
   console.log(status);
   const allStatus = [ 'Free', 'Reserved', 'Busy', 'Cleaning' ];
@@ -48,6 +49,11 @@ function Table() {
   // const getCurrentStatus = (status) => {
   //   currentStatus = 
   // }
+  const handleBill = (e) => {
+    if (e.target.value >= 0) {
+
+    }
+  };
 
     return (
       <Form>
@@ -91,9 +97,17 @@ function Table() {
               </Col>
             </Row>
           </Form.Group>
-       
+          <Form.Group>
+            <h2>Bill: </h2>
+            <Form.Control 
+              type='number'
+              value={bill}
+              onChange={handleBill}
+            />
+          </Form.Group>
           
         </Row>
+        <Button variant='primary' type='submit'>Edit</Button>
       </Form>
     );
   }
