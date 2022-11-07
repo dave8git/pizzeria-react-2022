@@ -2,6 +2,8 @@ import initialState from './initialState.js';
 
 // selectors 
 export const getAllTables = (state) => state.tables;
+export const getStatus = (state) => state.table.status;
+export const getTableId = ({ tables }, tableId) => tables.find((table) => table.id === tableId);
 
 // actions
 const createActionName = actionName => `app/tables/${actionName}`;
