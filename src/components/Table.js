@@ -2,7 +2,7 @@ import { Container, Row, Form, Col, Button, ProgressBar, Alert } from 'react-boo
 import  { Navigate, useParams } from 'react-router-dom';
 import { getStatus, getTableId } from '../redux/tablesRedux';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { editTableRequest } from '../redux/tablesRedux';
 
@@ -10,7 +10,7 @@ function Table() {
   const { id } = useParams();
 
   const table = useSelector((state) => getTableId(state, id));
-
+  const dispatch = useDispatch();
 
   const [status, setStatus] = useState(table.status);
   const [people, setPeople ] = useState(table.people);
@@ -23,8 +23,9 @@ function Table() {
   const statusArray = [];
 
   const handleSubmit = (e) => {
-    dispatchEvent(editTableRequest(id, { status, people, maxPeople, status }));
-    Navigate('/');
+    e.preventDefault();
+    dispatch(editTableRequest(id, { status, people, maxPeople, status }));
+    // Navigate('/');
   }
 
   const handleStatus = (e) => {
@@ -123,7 +124,7 @@ function Table() {
         
           
         </Row>
-        <Button variant='primary' type='submit'>Edit</Button>
+        <Button variant='primary' type='submit' onChange={handleSubmit}>Edit</Button>
       </Form>
     );
   }
