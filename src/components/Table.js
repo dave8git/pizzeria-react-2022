@@ -1,9 +1,10 @@
 import { Container, Row, Form, Col, Button, ProgressBar, Alert } from 'react-bootstrap'; 
-import  { useParams } from 'react-router-dom';
+import  { Navigate, useParams } from 'react-router-dom';
 import { getStatus, getTableId } from '../redux/tablesRedux';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
+import { editTableRequest } from '../redux/tablesRedux';
 
 function Table() {
   const { id } = useParams();
@@ -12,16 +13,28 @@ function Table() {
 
 
   const [status, setStatus] = useState(table.status);
-  const [people, setPeople ] = useState(table.maxPeople);
+  const [people, setPeople ] = useState(table.people);
   const [maxPeople, setMaxPeople] = useState(table.maxPeople);
   const [bill, setBill] = useState(table.bill);
+  const [ visible, setVisible ] = useState(status === 'Busy');
 
   console.log(status);
   const allStatus = [ 'Free', 'Reserved', 'Busy', 'Cleaning' ];
   const statusArray = [];
 
+  const handleSubmit = (e) => {
+    dispatchEvent(editTableRequest(id, { status, people, maxPeople, status }));
+    Navigate('/');
+  }
+
   const handleStatus = (e) => {
     setStatus(e.target.value);
+    if(e.target.value === 'Cleaning' || e.target.value === 'Free') {
+      setPeople(0);
+      setVisible(false);
+    } else {
+      setVisible(true);
+    }
   }
 
   const {
@@ -51,7 +64,7 @@ function Table() {
   // }
   const handleBill = (e) => {
     if (e.target.value >= 0) {
-
+      setBill(e.target.value);
     }
   };
 
@@ -69,7 +82,7 @@ function Table() {
               onChange={handleStatus}
               value={status}
             >
-              <option>{status}</option>
+              <option>Choose availability:</option>
               {allStatus.map((statusFromArray, index) => (
                 <option value={statusFromArray} key={index}> 
                   {statusFromArray}
@@ -97,14 +110,17 @@ function Table() {
               </Col>
             </Row>
           </Form.Group>
-          <Form.Group>
-            <h2>Bill: </h2>
-            <Form.Control 
-              type='number'
-              value={bill}
-              onChange={handleBill}
-            />
-          </Form.Group>
+          {visible && (
+              <Form.Group>
+              <h2>Bill: </h2>
+              <Form.Control 
+                type='number'
+                value={bill}
+                onChange={handleBill}
+              />
+            </Form.Group>
+          )}
+        
           
         </Row>
         <Button variant='primary' type='submit'>Edit</Button>
