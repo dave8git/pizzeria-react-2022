@@ -1,5 +1,5 @@
 import { Container, Row, Form, Col, Button, ProgressBar, Alert } from 'react-bootstrap'; 
-import  { Navigate, useParams } from 'react-router-dom';
+import  { useNavigate, useParams } from 'react-router-dom';
 import { getStatus, getTableId } from '../redux/tablesRedux';
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -11,11 +11,12 @@ function Table() {
 
   const table = useSelector((state) => getTableId(state, id));
   const dispatch = useDispatch();
+  const navigate = useNavigate(); 
 
-  const [status, setStatus] = useState(table.status);
-  const [people, setPeople ] = useState(table.people);
-  const [maxPeople, setMaxPeople] = useState(table.maxPeople);
-  const [bill, setBill] = useState(table.bill);
+  const [ status, setStatus ] = useState(table.status);
+  const [ people, setPeople ] = useState(table.people);
+  const [ maxPeople, setMaxPeople] = useState(table.maxPeople);
+  const [ bill, setBill] = useState(table.bill);
   const [ visible, setVisible ] = useState(status === 'Busy');
 
   console.log(status);
@@ -24,8 +25,8 @@ function Table() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(editTableRequest(id, { status, people, maxPeople, status }));
-    // Navigate('/');
+    dispatch(editTableRequest({ id, status, people, maxPeople, bill }));
+    navigate('/');
   }
 
   const handleStatus = (e) => {
@@ -41,7 +42,6 @@ function Table() {
   const {
     register,
     handleSubmit: validate,
-    formState: { errors },
   } = useForm();
 
   const handleChangePeople = (e) => {
