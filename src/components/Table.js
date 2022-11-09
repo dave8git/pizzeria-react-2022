@@ -124,7 +124,7 @@ function Table() {
         
           
         </Row>
-        <Button variant='primary' type='submit' onChange={handleSubmit}>Edit</Button>
+        <Button variant='primary' type='submit' onClick={handleSubmit}>Edit</Button>
       </Form>
     );
   }
