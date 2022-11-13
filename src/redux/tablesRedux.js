@@ -1,5 +1,5 @@
 import initialState from './initialState.js';
-
+import API_URL from '../../src/config';
 // selectors 
 export const getAllTables = (state) => state.tables;
 export const getStatus = (state) => state.table.status;
@@ -18,7 +18,7 @@ export const updateTable = (payload) => ({ type: UPDATE_TABLE, payload });
 
 export const fetchTables = dispatch => { // nie ma żadnej metody (np. PUT, POST itp. ) ponieważ domyślnie używany jest GET
     return (dispatch) => {
-        fetch('http://localhost:3131/api/tables')
+        fetch(`${API_URL}/tables`)
         .then(res => res.json())
         .then(tables => dispatch(updateTables(tables)));
     }
@@ -33,7 +33,7 @@ export const editTableRequest = (table)  => {
             },
             body: JSON.stringify(table),
         }
-        fetch('http://localhost:3131/api/tables/'+table.id, options) // fetch ogólnie służy do komunikacji z serwerem, nie koniecznie tylko "przynieś dane" - ale np. PUT/PATCH - aktualizuje dane
+        fetch(API_URL+'/tables/'+table.id, options) // fetch ogólnie służy do komunikacji z serwerem, nie koniecznie tylko "przynieś dane" - ale np. PUT/PATCH - aktualizuje dane
             .then(() => dispatch(updateTable(table)))
     };
 }
