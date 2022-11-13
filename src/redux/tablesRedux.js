@@ -1,5 +1,5 @@
 import initialState from './initialState.js';
-import API_URL from '../../src/config';
+import { API_URL } from '../../src/config';
 // selectors 
 export const getAllTables = (state) => state.tables;
 export const getStatus = (state) => state.table.status;
